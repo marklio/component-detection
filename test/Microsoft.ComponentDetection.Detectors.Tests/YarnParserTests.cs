@@ -101,7 +101,7 @@ namespace Microsoft.ComponentDetection.Detectors.Tests
 
             foreach (var entry in file.Entries)
             {
-                YarnBlock block = blocks.Single(x => x.Values["resolved"] == entry.Resolved);
+                var block = blocks.Single(x => x.Values["resolved"] == entry.Resolved);
 
                 AssertBlockMatchesEntry(block, entry);
             }

@@ -88,7 +88,7 @@ namespace Microsoft.ComponentDetection.Contracts.Tests
         public void ScanResultSerialization_ExpectedJsonFormat()
         {
             var serializedResult = JsonConvert.SerializeObject(scanResultUnderTest);
-            JObject json = JObject.Parse(serializedResult);
+            var json = JObject.Parse(serializedResult);
 
             json.Value<string>("resultCode").Should().Be("PartialSuccess");
             var foundComponent = json["componentsFound"].First();

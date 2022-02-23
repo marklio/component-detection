@@ -38,21 +38,21 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
             Logger.LogCreateLoggingGroup();
             Logger.LogInfo($"Finding components...");
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
             var exitCode = ProcessingResultCode.Success;
 
             // Run the scan on all protocol scanners and union the results
-            ConcurrentDictionary<string, DetectorRunResult> providerElapsedTime = new ConcurrentDictionary<string, DetectorRunResult>();
+            var providerElapsedTime = new ConcurrentDictionary<string, DetectorRunResult>();
             var detectorArguments = GetDetectorArgs(detectionArguments.DetectorArgs);
 
-            ExcludeDirectoryPredicate exclusionPredicate = IsOSLinuxOrMac()
+            var exclusionPredicate = IsOSLinuxOrMac()
                 ? GenerateDirectoryExclusionPredicate(detectionArguments.SourceDirectory.ToString(), detectionArguments.DirectoryExclusionList, detectionArguments.DirectoryExclusionListObsolete, allowWindowsPaths: false, ignoreCase: false)
                 : GenerateDirectoryExclusionPredicate(detectionArguments.SourceDirectory.ToString(), detectionArguments.DirectoryExclusionList, detectionArguments.DirectoryExclusionListObsolete, allowWindowsPaths: true, ignoreCase: true);
 
             IEnumerable<Task<(IndividualDetectorScanResult, ComponentRecorder, IComponentDetector)>> scanTasks = detectors
                 .Select(async detector =>
                 {
-                    Stopwatch providerStopwatch = new Stopwatch();
+                    var providerStopwatch = new Stopwatch();
                     providerStopwatch.Start();
 
                     var componentRecorder = new ComponentRecorder(Logger, !detector.NeedsAutomaticRootDependencyCalculation);
@@ -118,7 +118,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
 
             var results = await Task.WhenAll(scanTasks);
 
-            DetectorProcessingResult detectorProcessingResult = ConvertDetectorResultsIntoResult(results, exitCode);
+            var detectorProcessingResult = ConvertDetectorResultsIntoResult(results, exitCode);
 
             var totalElapsedTime = stopwatch.Elapsed.TotalSeconds;
             LogTabularOutput(Logger, providerElapsedTime, totalElapsedTime);
@@ -190,7 +190,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
 
         private void LogTabularOutput(ILogger logger, ConcurrentDictionary<string, DetectorRunResult> providerElapsedTime, double totalElapsedTime)
         {
-            TabularStringFormat tsf = new TabularStringFormat(new Column[]
+            var tsf = new TabularStringFormat(new Column[]
                         {
                             new Column { Header = "Component Detector Id", Width = 30 },
                             new Column { Header = "Detection Time", Width = 30, Format = "{0:g2} seconds" },
@@ -271,8 +271,8 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
 
                 return (ReadOnlySpan<char> nameOfDirectoryToConsiderSpan, ReadOnlySpan<char> pathOfParentOfDirectoryToConsiderSpan) =>
                 {
-                    string pathOfParentOfDirectoryToConsider = pathOfParentOfDirectoryToConsiderSpan.ToString();
-                    string nameOfDirectoryToConsider = nameOfDirectoryToConsiderSpan.ToString();
+                    var pathOfParentOfDirectoryToConsider = pathOfParentOfDirectoryToConsiderSpan.ToString();
+                    var nameOfDirectoryToConsider = nameOfDirectoryToConsiderSpan.ToString();
 
                     foreach (var valueTuple in directories)
                     {
@@ -292,7 +292,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
                 };
             }
 
-            Dictionary<string, Glob> minimatchers = new Dictionary<string, Glob>();
+            var minimatchers = new Dictionary<string, Glob>();
 
             var globOptions = new GlobOptions()
             {

@@ -56,7 +56,7 @@ namespace Microsoft.ComponentDetection.Common.Tests
 
             // Second row has the headers
             var headerCells = splitStrings[1].Split(new[] { TabularStringFormat.DefaultVerticalLineChar }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < columns.Length; i++)
+            for (var i = 0; i < columns.Length; i++)
             {
                 headerCells[i]
                     .Should().Contain(columns[i].Header);
@@ -71,7 +71,7 @@ namespace Microsoft.ComponentDetection.Common.Tests
 
             // Fourth row should have some info
             var rowCells = splitStrings[3].Split(new[] { TabularStringFormat.DefaultVerticalLineChar }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < columns.Length; i++)
+            for (var i = 0; i < columns.Length; i++)
             {
                 rowCells[i]
                     .Should().Contain(rows[0][i].ToString());

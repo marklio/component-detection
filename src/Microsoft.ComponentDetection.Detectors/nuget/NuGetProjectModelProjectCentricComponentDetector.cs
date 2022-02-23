@@ -52,7 +52,7 @@ namespace Microsoft.ComponentDetection.Detectors.NuGet
                     throw new FormatException("Lockfile did not contain a PackageSpec");
                 }
 
-                HashSet<string> frameworkComponents = GetFrameworkComponents(lockFile);
+                var frameworkComponents = GetFrameworkComponents(lockFile);
                 var explicitReferencedDependencies =
                     GetTopLevelLibraries(lockFile)
                     .Select(x => GetLibraryComponentWithDependencyLookup(lockFile.Libraries, x.name, x.version, x.versionRange))
@@ -218,7 +218,7 @@ namespace Microsoft.ComponentDetection.Detectors.NuGet
             if (matchingLibrary == null)
             {
                 matchingLibrary = matchingLibraryNames.First();
-                string logMessage = $"Couldn't satisfy lookup for {(versionRange != null ? versionRange.ToNormalizedString() : version.ToString())}. Falling back to first found component for {matchingLibrary.Name}, resolving to version {matchingLibrary.Version}.";
+                var logMessage = $"Couldn't satisfy lookup for {(versionRange != null ? versionRange.ToNormalizedString() : version.ToString())}. Falling back to first found component for {matchingLibrary.Name}, resolving to version {matchingLibrary.Version}.";
                 if (!alreadyLoggedWarnings.Contains(logMessage))
                 {
                     Logger.LogWarning(logMessage);
@@ -244,7 +244,7 @@ namespace Microsoft.ComponentDetection.Detectors.NuGet
                         foreach (var target in lockFile.Targets)
                         {
                             var matchingLibrary = target.Libraries.FirstOrDefault(x => x.Name == name);
-                            HashSet<string> dependencyComponents = GetDependencyComponentIds(lockFile, target, matchingLibrary.Dependencies);
+                            var dependencyComponents = GetDependencyComponentIds(lockFile, target, matchingLibrary.Dependencies);
                             frameworkDependencies.UnionWith(dependencyComponents);
                         }
                     }
@@ -262,7 +262,7 @@ namespace Microsoft.ComponentDetection.Detectors.NuGet
         private HashSet<string> GetDependencyComponentIds(LockFile lockFile, LockFileTarget target, IList<PackageDependency> dependencies, HashSet<string> visited = null)
         {
             visited = visited ?? new HashSet<string>();
-            HashSet<string> currentComponents = new HashSet<string>();
+            var currentComponents = new HashSet<string>();
             foreach (var dependency in dependencies)
             {
                 if (visited.Contains(dependency.Id))

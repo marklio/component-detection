@@ -36,7 +36,7 @@ namespace Microsoft.ComponentDetection.Detectors.Pnpm
             var file = processRequest.ComponentStream;
 
             Logger.LogVerbose("Found yaml file: " + file.Location);
-            string skippedFolder = SkippedFolders.FirstOrDefault(folder => file.Location.Contains(folder));
+            var skippedFolder = SkippedFolders.FirstOrDefault(folder => file.Location.Contains(folder));
             if (!string.IsNullOrEmpty(skippedFolder))
             {
                 Logger.LogVerbose($"Skipping found file, it was detected as being within a {skippedFolder} folder.");
@@ -64,7 +64,7 @@ namespace Microsoft.ComponentDetection.Detectors.Pnpm
                 }
 
                 var parentDetectedComponent = PnpmParsingUtilities.CreateDetectedComponentFromPnpmPath(pnpmPackagePath: packageKeyValue.Key);
-                bool isDevDependency = packageKeyValue.Value != null && PnpmParsingUtilities.IsPnpmPackageDevDependency(packageKeyValue.Value);
+                var isDevDependency = packageKeyValue.Value != null && PnpmParsingUtilities.IsPnpmPackageDevDependency(packageKeyValue.Value);
                 singleFileComponentRecorder.RegisterUsage(parentDetectedComponent, isDevelopmentDependency: isDevDependency);
                 parentDetectedComponent = singleFileComponentRecorder.GetComponent(parentDetectedComponent.Component.Id);
 

@@ -31,7 +31,7 @@ namespace Microsoft.ComponentDetection.Detectors.Pip
 
         protected override async Task<IObservable<ProcessRequest>> OnPrepareDetection(IObservable<ProcessRequest> processRequests, IDictionary<string, string> detectorArgs)
         {
-            CurrentScanRequest.DetectorArgs.TryGetValue("Pip.PythonExePath", out string pythonExePath);
+            CurrentScanRequest.DetectorArgs.TryGetValue("Pip.PythonExePath", out var pythonExePath);
             if (!await PythonCommandService.PythonExists(pythonExePath))
             {
                 Logger.LogInfo($"No python found on system. Python detection will not run.");
@@ -44,7 +44,7 @@ namespace Microsoft.ComponentDetection.Detectors.Pip
 
         protected override async Task OnFileFound(ProcessRequest processRequest, IDictionary<string, string> detectorArgs)
         {
-            CurrentScanRequest.DetectorArgs.TryGetValue("Pip.PythonExePath", out string pythonExePath);
+            CurrentScanRequest.DetectorArgs.TryGetValue("Pip.PythonExePath", out var pythonExePath);
             var singleFileComponentRecorder = processRequest.SingleFileComponentRecorder;
             var file = processRequest.ComponentStream;
 

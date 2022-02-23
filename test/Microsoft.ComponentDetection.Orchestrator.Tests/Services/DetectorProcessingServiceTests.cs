@@ -175,7 +175,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Tests.Services
         [TestMethod]
         public void ProcessDetectorsAsync_NullDetectedComponentsReturnIsCoalesced()
         {
-            Mock<IComponentDetector> mockComponentDetector = new Mock<IComponentDetector>();
+            var mockComponentDetector = new Mock<IComponentDetector>();
             mockComponentDetector.Setup(d => d.Id).Returns("test");
 
             mockComponentDetector.Setup(x => x.ExecuteDetectorAsync(It.IsAny<ScanRequest>()))
@@ -207,7 +207,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Tests.Services
             foreach (var discoveredComponent in GetDiscoveredComponentsFromDetectorProcessingResult(results))
             {
                 var componentId = discoveredComponent.Component.Id;
-                bool isMatched = false;
+                var isMatched = false;
                 foreach (var graph in results.ComponentRecorders.Select(componentRecorder => componentRecorder.Item2.GetDependencyGraphsByLocation()).SelectMany(x => x.Values))
                 {
                     isMatched |= graph.GetComponents().Contains(componentId);
@@ -385,7 +385,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Tests.Services
 
             // This unit test previously depended on defaultArgs.   But the author assumed that \Source\ was in the default source path, which may not be true on all developers machines.
             // control this more explicitly.
-            BcdeArguments args = new BcdeArguments { SourceDirectory = new System.IO.DirectoryInfo(isWin ? @"C:\Some\Source\Directory" : "/c/Some/Source/Directory"), DetectorArgs = Enumerable.Empty<string>() };
+            var args = new BcdeArguments { SourceDirectory = new System.IO.DirectoryInfo(isWin ? @"C:\Some\Source\Directory" : "/c/Some/Source/Directory"), DetectorArgs = Enumerable.Empty<string>() };
 
             var dn = args.SourceDirectory.Name.AsSpan();
             var dp = args.SourceDirectory.Parent.FullName.AsSpan();
@@ -471,7 +471,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Tests.Services
         [TestMethod]
         public void ProcessDetectorsAsync_CapturesTelemetry()
         {
-            BcdeArguments args = defaultArgs;
+            var args = defaultArgs;
             detectorsToUse = new[] { firstFileComponentDetectorMock.Object, secondFileComponentDetectorMock.Object };
 
             var records = TelemetryHelper.ExecuteWhileCapturingTelemetry<DetectorExecutionTelemetryRecord>(() =>

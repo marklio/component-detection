@@ -26,7 +26,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Services
 
         public async Task<ScanResult> Handle(IScanArguments arguments)
         {
-            BcdeArguments bcdeArguments = (BcdeArguments)arguments;
+            var bcdeArguments = (BcdeArguments)arguments;
             var result = await BcdeScanExecutionService.ExecuteScanAsync(bcdeArguments);
             WriteComponentManifest(bcdeArguments, result);
             return result;

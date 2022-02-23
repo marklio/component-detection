@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CycloneDX.Core" />
         <PackageReference Include="Newtonsoft.Json"/>
         <PackageReference Include="PackageUrl"/>
         <PackageReference Include="System.Composition.AttributedModel"/>
